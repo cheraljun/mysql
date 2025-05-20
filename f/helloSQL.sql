@@ -2,7 +2,6 @@ SET SQL_SAFE_UPDATES = 0;
 
 SHOW DATABASES;
 
-DROP DATABASE `helloSQL`;
 CREATE DATABASE `helloSQL`;
 
 USE `helloSQL`;
@@ -70,48 +69,49 @@ PRIMARY KEY(`student_id`)
 );
 INSERT INTO `student`(`name`,`major`) VALUES('小绿', '语文');
 INSERT INTO `student`(`name`,`major`) VALUES('小白', '数学');
-INSERT INTO `student`(`name`) VALUES('小黄');
+INSERT INTO `student`(`name`,`major`) VALUES('小黄','卫生与健康');
 INSERT INTO `student`(`name`,`score`) VALUES('小黑',30);
 INSERT INTO `student`(`name`) VALUES('小红');
 SELECT * FROM `student`;
 
 UPDATE `student`
-SET `major` = '英语文学'
+SET `major` = '英语文学英语艺术英语单词'
 WHERE `major` = '英语';
 SELECT * FROM `student`;
 
 UPDATE `student`
 SET `major` = '历史'
-WHERE `student_id` = '3';
+WHERE `student_id` = '1';
 SELECT * FROM `student`;
 
 UPDATE `student`
-SET `major` = '语文'
-WHERE `major` = '历史' OR `major` = '英语文学';
+SET `major` = '计算机信息技术'
+WHERE `major` = '数学' OR `major` = '历史';
 SELECT * FROM `student`;
 
 UPDATE `student`
 SET `name` = '陈睿康',`major` = '哲学'
-WHERE `major` = '语文';
-SELECT * FROM `student`;
-
-UPDATE `student`
-SET `name` = '陈欢',`major` = '英语';
+WHERE `major` = '英语文学英语艺术英语单词';
 SELECT * FROM `student`;
 
 DELETE FROM `student`
-WHERE `student_id` = 4;
+WHERE `student_id` = 5;
 SELECT * FROM `student`;
 
 DELETE FROM `student`
-WHERE `name` = '陈睿康' AND `major` = '哲学';
+WHERE `name` = '小白' AND `major` = '计算机信息技术';
 SELECT * FROM `student`;
 
 DELETE FROM `student`
 WHERE `score` >= 80;
 SELECT * FROM `student`;
 
-DELETE FROM `student`;
+UPDATE `student`
+SET `name` = '陈欢',`major` = '英语',`score` = 100;
+SELECT * FROM `student`;
 
 INSERT INTO `student` VALUES(1,'陈睿康','哲学',100);
 SELECT * FROM `student`;
+-- DELETE FROM `student`;
+-- SELECT * FROM `student`;
+-- DROP DATABASE `helloSQL`;

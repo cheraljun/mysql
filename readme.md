@@ -1,9 +1,6 @@
-根据你的SQL语句整理的笔记如下，保持了原有格式和风格：
-
-
 ```sql
 git add f readme.md
-git commit -m "新增MySQL语法笔记：数据库操作、数据类型、表约束及增删改查示例"
+git commit -m "重排序MySQL数据库操作、数据类型、表约束及单一表格的增删改查"
 git remote add origin git@github.com:cheraljun/mysql.git
 git remote add origin https://github.com/cheraljun/mysql.git
 git push origin master
@@ -69,16 +66,20 @@ INSERT INTO `student` VALUES(1,'小白','历史');
 INSERT INTO `student`(`name`,`major`) VALUES('小白','英语');
 插入时覆盖默认值
 INSERT INTO `student`(`name`,`major`,`score`) VALUES('小明','数学',95);
+插入时指定自增主键（不推荐）
+INSERT INTO `student`(`student_id`,`name`,`major`) VALUES(1,'小白','历史');
+插入时使用默认值（省略列名）
+INSERT INTO `student`(`name`) VALUES('小红'); -- major使用默认值
 
 数据更新
 更新指定条件的记录
 UPDATE `student` SET `major` = '英语文学' WHERE `major` = '英语';
-更新多条记录
-UPDATE `student` SET `major` = '历史' WHERE `student_id` = '3';
+更新多条记录（多条件）
+UPDATE `student` SET `major` = '历史' WHERE `student_id` = 1;
 更新多列
-UPDATE `student` SET `name` = '陈睿康',`major` = '哲学' WHERE `major` = '语文';
-无条件更新（谨慎使用）
-UPDATE `student` SET `name` = '陈欢',`major` = '英语';
+UPDATE `student` SET `name` = '陈睿康',`major` = '哲学' WHERE `major` = '英语';
+无条件更新（谨慎使用，会更新所有记录）
+UPDATE `student` SET `name` = '陈欢',`major` = '英语',`score` = 100;
 
 数据删除
 删除指定条件的记录
@@ -89,4 +90,18 @@ DELETE FROM `student` WHERE `name` = '陈欢' AND `major` = '英语';
 DELETE FROM `student` WHERE `score` >= 80;
 清空表（谨慎使用）
 DELETE FROM `student`;
+
+安全模式设置（谨慎使用）
+SET SQL_SAFE_UPDATES = 0; -- 允许无WHERE条件的更新和删除
+SET SQL_SAFE_UPDATES = 1; -- 禁止无WHERE条件的更新和删除
+
+复合条件操作示例
+-- 插入数据时覆盖多个默认值
+INSERT INTO `student`(`name`,`major`,`score`) VALUES('小黄','卫生与健康',75);
+-- 更新时使用OR条件
+UPDATE `student` SET `major` = '计算机信息技术' WHERE `major` = '数学' OR `major` = '历史';
+-- 删除时使用自增主键
+DELETE FROM `student` WHERE `student_id` = 5;
+-- 插入自增主键数据（不推荐，可能导致冲突）
+INSERT INTO `student` VALUES(1,'陈睿康','哲学',100);
 ```
