@@ -2,6 +2,7 @@ SET SQL_SAFE_UPDATES = 0;
 
 SHOW DATABASES;
 
+DROP DATABASE `helloSQL`;
 CREATE DATABASE `helloSQL`;
 
 USE `helloSQL`;
@@ -114,4 +115,32 @@ INSERT INTO `student` VALUES(1,'陈睿康','哲学',100);
 SELECT * FROM `student`;
 -- DELETE FROM `student`;
 -- SELECT * FROM `student`;
--- DROP DATABASE `helloSQL`;
+-- DROP DATABASE `helloSQL`;alter
+
+SELECT `name`,`major` FROM `student`;
+
+UPDATE `student`
+SET `score` = 80
+WHERE `name` = '陈睿康';
+SELECT * FROM `student` ORDER BY `score`;
+SELECT * FROM `student` ORDER BY `score` DESC;
+SELECT * FROM `student` LIMIT 1;
+
+DROP TABLE `student`;
+CREATE TABLE `student`(
+`student_id` INT AUTO_INCREMENT,
+`name` VARCHAR(20),
+`major` VARCHAR(20) DEFAULT '英语',
+`score` INT DEFAULT 80,
+PRIMARY KEY(`student_id`)
+);
+INSERT INTO `student`(`name`,`major`) VALUES('小绿', '语文');
+INSERT INTO `student`(`name`,`major`) VALUES('小白', '数学');
+INSERT INTO `student`(`name`,`major`) VALUES('小黄','卫生与健康');
+INSERT INTO `student`(`name`,`score`) VALUES('小黑',30);
+INSERT INTO `student`(`name`) VALUES('小红');
+SELECT * FROM `student`;
+SELECT * FROM `student` WHERE `major` = '英语' or `major` = '卫生与健康'; -- 相当于IN
+SELECT * FROM `student` WHERE `score` <> 80;
+SELECT * FROM `student` WHERE `score` >= 30 LIMIT 2;
+SELECT * FROM `student` WHERE `major` IN('英语', '卫生与健康'); -- 相当于OR

@@ -1,6 +1,6 @@
 ```sql
 git add f readme.md
-git commit -m "重排序MySQL数据库操作、数据类型、表约束及单一表格的增删改查"
+git commit -m "不知道怎么度过的这一天"
 git remote add origin git@github.com:cheraljun/mysql.git
 git remote add origin https://github.com/cheraljun/mysql.git
 git push origin master
