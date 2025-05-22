@@ -84,3 +84,34 @@ INSERT INTO `works_with` VALUES(208,402,'9800');
 INSERT INTO `works_with` VALUES(208,403,'24000');
 INSERT INTO `works_with` VALUES(210,404,'87940');
 
+-- 取得所有员工资料
+SELECT * FROM `employee`;
+-- 取得所有客户资料
+SELECT * FROM `client`;
+-- 按照薪水低到高取得员工资料
+SELECT * FROM `employee`
+ORDER BY `salary`;
+-- 取得薪水前3高的员工资料
+SELECT * FROM `employee`
+ORDER BY `salary` DESC
+LIMIT 3;
+-- 取得所有员工的名字
+SELECT `name` FROM `employee`;
+-- 取得员工的非重复性别
+SELECT `sex` FROM `employee`; -- 有重复的
+SELECT DISTINCT `sex` FROM `employee`; -- 去重
+
+-- 聚合函数 aggregate function
+-- 取得员工人数
+SELECT COUNT(*) FROM `employee`;
+-- 取得出生于1970-01-01之后的女性员工人数alter
+SELECT COUNt(*) FROM `employee`
+WHERE `birth_date` > '1970-01-01' AND `sex` = 'F';
+-- 取得平均薪水
+SELECT AVG(`salary`) FROM `employee`;
+-- 取得薪水总和
+SELECT SUM(`salary`) FROM `employee`;
+-- 取得薪水最高的员工
+SELECT MAX(`salary`) FROM `employee`;
+-- 取得薪水最低的员工
+SELECT MIN(`salary`) FROM `employee`;

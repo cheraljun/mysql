@@ -1,6 +1,6 @@
 ```sql
 git add f readme.md
-git commit -m "重写readme笔记，现在readme是sql语句的注释"
+git commit -m "like excel,mysql."
 git remote add origin git@github.com:cheraljun/mysql.git
 git remote add origin https://github.com/cheraljun/mysql.git
 git push origin master
@@ -250,7 +250,7 @@ SELECT * FROM `student` WHERE `major` IN('英语', '卫生与健康');
 | 210         | 404       | 87940       |
 # hiSQL
 ```hiSQL
--- 显示所有数据库
+-- 查看所有数据库
 SHOW DATABASES;
 
 -- 删除名为hiSQL的数据库（如果存在）
@@ -262,61 +262,61 @@ CREATE DATABASE `hiSQL`;
 -- 使用hiSQL数据库
 USE `hiSQL`;
 
--- 创建员工表，包含员工基本信息
+-- 创建员工表
 CREATE TABLE `employee`(
-`employee_id` INT,                -- 员工ID
-`name` VARCHAR(20),               -- 员工姓名
-`birth_date` DATE,                -- 出生日期
-`sex` VARCHAR(20),                -- 性别
-`salary` INT,                     -- 工资
-`branch_id` INT,                  -- 所属部门ID
-`sup_id` INT,                     -- 上级ID
-PRIMARY KEY(`employee_id`)        -- 将employee_id设为主键
+    `employee_id` INT,            -- 员工ID
+    `name` VARCHAR(20),           -- 员工姓名
+    `birth_date` DATE,            -- 出生日期
+    `sex` VARCHAR(20),            -- 性别
+    `salary` INT,                 -- 薪水
+    `branch_id` INT,              -- 所属部门ID
+    `sup_id` INT,                 -- 上级领导ID
+    PRIMARY KEY(`employee_id`)    -- 设置员工ID为主键
 );
 
--- 查看employee表的结构
+-- 查看员工表结构
 DESCRIBE `employee`;
 
--- 创建部门表，包含部门信息和部门经理
+-- 创建部门表
 CREATE TABLE `branch`(
-`branch_id` INT,                  -- 部门ID
-`branch_name` VARCHAR(20),        -- 部门名称
-`manager_id` INT,                 -- 部门经理ID
-PRIMARY KEY(`branch_id`),         -- 将branch_id设为主键
--- 外键约束：引用employee表的employee_id，当关联员工被删除时设为NULL
-FOREIGN KEY (`manager_id`) REFERENCES `employee`(`employee_id`) ON DELETE SET NULL
+    `branch_id` INT,              -- 部门ID
+    `branch_name` VARCHAR(20),    -- 部门名称
+    `manager_id` INT,             -- 部门经理ID
+    PRIMARY KEY(`branch_id`),     -- 设置部门ID为主键
+    -- 外键约束：引用employee表的employee_id，当员工被删除时将此值设为NULL
+    FOREIGN KEY (`manager_id`) REFERENCES `employee`(`employee_id`) ON DELETE SET NULL
 );
 
 -- 为employee表添加外键约束，关联到branch表的branch_id
 ALTER TABLE `employee`
 ADD FOREIGN KEY(`branch_id`)
 REFERENCES `branch`(`branch_id`)
-ON DELETE SET NULL;               -- 当关联部门被删除时，员工的部门ID设为NULL
+ON DELETE SET NULL;               -- 当部门被删除时，员工的部门ID设为NULL
 
--- 为employee表添加自引用外键约束，关联到自身的employee_id（上级关系）
+-- 为employee表添加自关联外键约束，关联到自身的employee_id
 ALTER TABLE `employee`
 ADD FOREIGN KEY(sup_id)
 REFERENCES `employee`(`employee_id`)
-ON DELETE SET NULL;               -- 当关联上级被删除时，员工的上级ID设为NULL
+ON DELETE SET NULL;               -- 当上级领导被删除时，员工的上级领导ID设为NULL
 
--- 创建客户表，包含客户基本信息
+-- 创建客户表
 CREATE TABLE `client`(
-`client_id` INT,                  -- 客户ID
-`client_name` VARCHAR(20),        -- 客户名称
-`phone` VARCHAR(20),              -- 客户电话
-PRIMARY KEY(`client_id`)          -- 将client_id设为主键
+    `client_id` INT,              -- 客户ID
+    `client_name` VARCHAR(20),    -- 客户名称
+    `phone` VARCHAR(20),          -- 联系电话
+    PRIMARY KEY(`client_id`)      -- 设置客户ID为主键
 );
 
 -- 创建员工与客户的关联表，记录销售业绩
 CREATE TABLE `works_with`(
-`employee_id` INT,                -- 员工ID
-`client_id` INT,                  -- 客户ID
-`total_sales` INT,                -- 总销售额
-PRIMARY KEY(`employee_id`,`client_id`), -- 复合主键，确保组合唯一
--- 外键约束：引用employee表的employee_id，当员工被删除时级联删除
-FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE,
--- 外键约束：引用client表的client_id，当客户被删除时级联删除
-FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE
+    `employee_id` INT,            -- 员工ID
+    `client_id` INT,              -- 客户ID
+    `total_sales` INT,            -- 总销售额
+    PRIMARY KEY(`employee_id`,`client_id`), -- 复合主键，确保组合唯一
+    -- 外键约束：引用employee表的employee_id，当员工被删除时级联删除
+    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`) ON DELETE CASCADE,
+    -- 外键约束：引用client表的client_id，当客户被删除时级联删除
+    FOREIGN KEY (`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE
 );
 
 -- 插入部门资料，初始时经理ID为NULL
@@ -325,24 +325,24 @@ INSERT INTO `branch` VALUES(2,'行政',NULL);
 INSERT INTO `branch` VALUES(3,'咨询',NULL);
 
 -- 插入员工资料，包含员工基本信息和所属部门
-INSERT INTO `employee` VALUES(206,'小黄','1998-10-08','F',50000,1,NULL);
-INSERT INTO `employee` VALUES(207,'小绿','1985-09-16','M',29000,2,206);
-INSERT INTO `employee` VALUES(208,'小黑','2000-12-19','M',35000,3,206);
-INSERT INTO `employee` VALUES(209,'小白','1997-01-22','F',39000,3,207);
-INSERT INTO `employee` VALUES(210,'小蓝','1925-11-10','F',84000,1,207);
+INSERT INTO `employee` VALUES(206,'小黄','1998-10-08','F',50000,1,NULL);  -- 研发部门经理
+INSERT INTO `employee` VALUES(207,'小绿','1985-09-16','M',29000,2,206);  -- 行政部门经理，直属上级是小黄
+INSERT INTO `employee` VALUES(208,'小黑','2000-12-19','M',35000,3,206);  -- 咨询部门经理，直属上级是小黄
+INSERT INTO `employee` VALUES(209,'小白','1997-01-22','F',39000,3,207);  -- 咨询部门员工，直属上级是小绿
+INSERT INTO `employee` VALUES(210,'小蓝','1925-11-10','F',84000,1,207);  -- 研发部门员工，直属上级是小绿
 
--- 更新部门表，设置各部门的经理
+-- 更新部门表，设置各部门的经理ID
 UPDATE `branch`
 SET `manager_id` = 206
-WHERE `branch_id` = 1;
+WHERE `branch_id` = 1;            -- 研发部门经理是小黄
 
 UPDATE `branch`
 SET `manager_id` = 207
-WHERE `branch_id` = 2;
+WHERE `branch_id` = 2;            -- 行政部门经理是小绿
 
 UPDATE `branch`
 SET `manager_id` = 208
-WHERE `branch_id` = 3;
+WHERE `branch_id` = 3;            -- 咨询部门经理是小黑
 
 -- 插入客户资料
 INSERT INTO `client` VALUES(400,'阿狗','254354335');
@@ -351,10 +351,55 @@ INSERT INTO `client` VALUES(402,'旺财','45354345');
 INSERT INTO `client` VALUES(403,'露西','54354365');
 INSERT INTO `client` VALUES(404,'艾瑞克','18783783');
 
--- 插入员工与客户的销售业绩记录
-INSERT INTO `works_with` VALUES(206,400,'70000');
-INSERT INTO `works_with` VALUES(207,401,'24000');
-INSERT INTO `works_with` VALUES(208,402,'9800');
-INSERT INTO `works_with` VALUES(208,403,'24000');
-INSERT INTO `works_with` VALUES(210,404,'87940');
+-- 插入员工与客户的销售业绩关系
+INSERT INTO `works_with` VALUES(206,400,70000);  -- 小黄与客户阿狗的总销售额
+INSERT INTO `works_with` VALUES(207,401,24000);  -- 小绿与客户阿猫的总销售额
+INSERT INTO `works_with` VALUES(208,402,9800);   -- 小黑与客户旺财的总销售额
+INSERT INTO `works_with` VALUES(208,403,24000);  -- 小黑与客户露西的总销售额
+INSERT INTO `works_with` VALUES(210,404,87940);  -- 小蓝与客户艾瑞克的总销售额
+
+-- 查询语句：数据检索与分析
+
+-- 取得所有员工资料
+SELECT * FROM `employee`;
+
+-- 取得所有客户资料
+SELECT * FROM `client`;
+
+-- 按照薪水低到高取得员工资料（默认升序）
+SELECT * FROM `employee`
+ORDER BY `salary`;
+
+-- 取得薪水前3高的员工资料（降序排列并取前3条）
+SELECT * FROM `employee`
+ORDER BY `salary` DESC
+LIMIT 3;
+
+-- 取得所有员工的名字
+SELECT `name` FROM `employee`;
+
+-- 取得员工的非重复性别
+SELECT `sex` FROM `employee`;         -- 包含重复值
+SELECT DISTINCT `sex` FROM `employee`; -- 使用DISTINCT关键字去重
+
+-- 聚合函数应用：对数据进行统计计算
+
+-- 取得员工人数
+SELECT COUNT(*) FROM `employee`;
+
+-- 取得出生于1970-01-01之后的女性员工人数
+SELECT COUNT(*) FROM `employee`
+WHERE `birth_date` > '1970-01-01' AND `sex` = 'F';
+
+-- 取得平均薪水
+SELECT AVG(`salary`) FROM `employee`;
+
+-- 取得薪水总和
+SELECT SUM(`salary`) FROM `employee`;
+
+-- 取得最高薪水
+SELECT MAX(`salary`) FROM `employee`;
+
+-- 取得最低薪水
+SELECT MIN(`salary`) FROM `employee`;    
 ```
